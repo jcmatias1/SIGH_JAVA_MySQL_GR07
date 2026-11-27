@@ -1,0 +1,52 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%-- Estructura de la aplicación: menú lateral por perfil + barra superior con usuario y temporizador --%>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<div class="app">
+    <aside class="lateral">
+        <a class="marca text-white" href="${ctx}/inicio" style="text-decoration:none">
+            <img src="${ctx}/img/logo-sigh.svg" alt="">
+            <div>
+                <div class="marca-nombre">SIGH</div>
+                <div class="marca-sub">Monster Salud</div>
+            </div>
+        </a>
+        <a class="menu-enlace ${activo == 'INICIO' ? 'activo' : ''}" href="${ctx}/inicio">
+            <i class="bi bi-house-door"></i> Inicio
+        </a>
+        <c:forEach var="sistema" items="${menu}">
+            <div class="menu-grupo"><c:out value="${sistema.descripcion}"/></div>
+            <c:forEach var="op" items="${sistema.opciones}">
+                <a class="menu-enlace ${activo == op.codigo ? 'activo' : ''}" href="${ctx}${op.url}">
+                    <i class="bi ${op.icono}"></i> <c:out value="${op.descripcion}"/>
+                </a>
+            </c:forEach>
+        </c:forEach>
+        <div class="lateral-pie">
+            Sistema Integral de Gestión Hospitalaria<br>Hospital General Monster Salud · GR07
+        </div>
+    </aside>
+
+    <div class="contenido">
+        <header class="barra-superior">
+            <h1 class="titulo">${titulo}</h1>
+            <div class="d-flex align-items-center flex-wrap" style="gap:14px">
+                <span class="temporizador" id="temporizador" data-segundos="${pageContext.session.maxInactiveInterval}"
+                      title="La sesión se cierra tras este tiempo de inactividad">
+                    <i class="bi bi-hourglass-split"></i> <span>15:00</span>
+                </span>
+                <div class="usuario-chip">
+                    <span class="avatar"><c:out value="${sessionScope.usuarioSesion.iniciales}"/></span>
+                    <div>
+                        <strong><c:out value="${sessionScope.usuarioSesion.nombreCompleto}"/></strong>
+                        <span><c:out value="${sessionScope.usuarioSesion.codigoUsuario}"/> · <c:out value="${sessionScope.usuarioSesion.perfilesTexto}"/></span>
+                    </div>
+                </div>
+                <form method="post" action="${ctx}/logout" class="m-0">
+                    <button class="btn btn-suave btn-sm" type="submit">
+                        <i class="bi bi-box-arrow-right mr-1"></i> Cerrar sesión
+                    </button>
+                </form>
+            </div>
+        </header>
+        <main class="pagina">

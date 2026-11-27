@@ -1,0 +1,6 @@
+<%@ page pageEncoding="UTF-8" %>
+        </main>
+    </div>
+</div>
+<script src="${pageContext.request.contextPath}/lib/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/sigh.js"></script>

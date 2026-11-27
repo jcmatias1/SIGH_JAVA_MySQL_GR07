@@ -1,0 +1,10 @@
+<%@ page pageEncoding="UTF-8" %>
+<%-- Encabezado HTML común: metadatos, Bootstrap, Bootstrap Icons, SweetAlert2 y estilos del SIGH --%>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${titulo} | SIGH Monster Salud</title>
+<link rel="icon" type="image/svg+xml" href="${pageContext.request.contextPath}/img/logo-sigh.svg">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/lib/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/lib/bootstrap-icons/bootstrap-icons.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/lib/sweetalert2/sweetalert2.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/sigh.css">
