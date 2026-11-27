@@ -113,7 +113,7 @@ public class DatosInicialesConfig {
                     """);
             total += jdbc.update("""
                     INSERT IGNORE INTO XESIS_SISTE (XESIS_CODIGO, XESIS_DESCRI) VALUES
-                     ('SEG', 'SEGURIDAD'), ('PER', 'PERSONAL')
+                     ('SEG', 'SEGURIDAD'), ('PER', 'PERSONAL'), ('REP', 'REPORTES')
                     """);
             total += jdbc.update("""
                     INSERT IGNORE INTO XEOPC_OPCIO (XEOPC_CODIGO, XESIS_CODIGO, XEOPC_DESCRI, XEOPC_URL) VALUES
@@ -122,12 +122,14 @@ public class DatosInicialesConfig {
                      ('S003', 'SEG', 'Consultar auditoría', '/seguridad/auditoria'),
                      ('P001', 'PER', 'Administrar departamentos', '/personal/departamentos'),
                      ('P002', 'PER', 'Administrar cargos', '/personal/cargos'),
-                     ('P003', 'PER', 'Mantenimiento de empleados', '/personal/empleados')
+                     ('P003', 'PER', 'Mantenimiento de empleados', '/personal/empleados'),
+                     ('R001', 'REP', 'Reportes de personal', '/reportes')
                     """);
             total += jdbc.update("""
                     INSERT IGNORE INTO XEOXP_OPCPE (XEPER_CODIGO, XEOPC_CODIGO, XEOXP_FECASI, XEOXP_FECRET) VALUES
                      ('ADM', 'S001', NOW(), NULL), ('ADM', 'S002', NOW(), NULL), ('ADM', 'S003', NOW(), NULL),
-                     ('ADM', 'P001', NOW(), NULL), ('ADM', 'P002', NOW(), NULL), ('ADM', 'P003', NOW(), NULL)
+                     ('ADM', 'P001', NOW(), NULL), ('ADM', 'P002', NOW(), NULL), ('ADM', 'P003', NOW(), NULL),
+                     ('ADM', 'R001', NOW(), NULL)
                     """);
 
             if (total > 0) {

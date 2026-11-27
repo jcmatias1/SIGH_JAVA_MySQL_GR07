@@ -17,7 +17,11 @@
         <h1>Administrar departamento</h1>
         <p>Registre los departamentos del hospital. Los cargos se crean dentro de un departamento; uno con cargos o empleados no se puede eliminar.</p>
     </div>
-    <button class="btn btn-sigh" type="button" id="btnNuevo"><i class="bi bi-plus-circle mr-1"></i> Nuevo departamento</button>
+    <div class="d-flex flex-wrap" style="gap:10px">
+        <%-- Taller 3: reporte PDF generado con JasperReports --%>
+        <a class="btn btn-suave" id="btnReporte" href="${pageContext.request.contextPath}/personal/departamentos/reporte" target="_blank" rel="noopener"><i class="bi bi-file-earmark-pdf mr-1"></i> Reporte PDF</a>
+        <button class="btn btn-sigh" type="button" id="btnNuevo"><i class="bi bi-plus-circle mr-1"></i> Nuevo departamento</button>
+    </div>
 </section>
 
 <div class="panel">

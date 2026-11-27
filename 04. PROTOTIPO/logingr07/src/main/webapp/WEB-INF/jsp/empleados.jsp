@@ -135,7 +135,7 @@
         <button class="btn btn-suave" type="button" id="btnActualizar"><i class="bi bi-pencil-square mr-1"></i> Actualizar</button>
         <button class="btn btn-peligro-suave" type="button" id="btnBorrar"><i class="bi bi-trash mr-1"></i> Borrar</button>
         <button class="btn btn-suave" type="button" id="btnCancelar"><i class="bi bi-x-lg mr-1"></i> Cancelar</button>
-        <button class="btn btn-suave" type="button" id="btnImprimir"><i class="bi bi-printer mr-1"></i> Imprimir</button>
+        <button class="btn btn-suave" type="button" id="btnImprimir" title="Ficha PDF del empleado seleccionado"><i class="bi bi-printer mr-1"></i> Imprimir</button>
     </div>
 </div>
 
@@ -146,6 +146,8 @@
             <span class="text-suave" id="resumen" style="font-size:14px">Cargando...</span>
         </div>
         <div class="d-flex flex-wrap" style="gap:10px">
+            <%-- Taller 3: listado PDF con JasperReports (usa el filtro de estado) --%>
+            <button class="btn btn-suave" type="button" id="btnListado"><i class="bi bi-file-earmark-pdf mr-1"></i> Listado PDF</button>
             <select class="custom-select" id="filtroEstado" style="width:170px">
                 <option value="A">Activos</option>
                 <option value="I">Inactivos</option>
@@ -339,6 +341,7 @@
         $("btnActualizar").disabled = !editando;
         const e = empleados.find(function (x) { return x.codigoEmpleado === seleccionado; });
         $("btnBorrar").disabled = !editando || (e && e.estado === "I");
+        $("btnImprimir").disabled = !editando; // la ficha se imprime del empleado seleccionado
         $("fEstado").disabled = !editando; // un registro nuevo siempre nace Activo
     }
 
@@ -543,30 +546,16 @@
 
     $("btnCancelar").addEventListener("click", limpiar);
 
-    // IMPRIMIR: reporte de los empleados que muestra la tabla (con el filtro actual)
+    // IMPRIMIR: ficha PDF (JasperReports) del empleado seleccionado, con sus 3 pestañas,
+    // sus datos académicos y sus familiares
     $("btnImprimir").addEventListener("click", function () {
-        const lista = filtrados();
-        const filtro = $("filtroEstado").options[$("filtroEstado").selectedIndex].text;
-        const filas = lista.map(function (e, i) {
-            return '<tr><td>' + (i + 1) + '</td><td>' + SIGH.esc(e.codigoEmpleado) + '</td><td>' + SIGH.esc(e.cedula) + '</td><td>'
-                + SIGH.esc(e.apellidos + " " + e.nombres) + '</td><td>' + SIGH.esc(e.departamento) + '</td><td>' + SIGH.esc(e.cargo)
-                + '</td><td>' + SIGH.esc(e.telefono || "") + '</td><td>' + SIGH.esc(e.email) + '</td><td>'
-                + (e.estado === "A" ? "Activo" : "Inactivo") + '</td></tr>';
-        }).join("");
-        const v = window.open("", "_blank");
-        if (!v) { SIGH.error("El navegador bloqueó la ventana de impresión. Permita las ventanas emergentes."); return; }
-        v.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Reporte de empleados</title>'
-            + '<style>body{font-family:Segoe UI,Arial,sans-serif;color:#1f2937;margin:24px}h1{font-size:20px;margin:0}'
-            + 'p{margin:4px 0 16px;color:#555;font-size:13px}table{border-collapse:collapse;width:100%;font-size:12px}'
-            + 'th,td{border:1px solid #cbd5e1;padding:6px;text-align:left}th{background:#e8f1fb}</style></head><body>'
-            + '<h1>Hospital General Monster Salud · Reporte de empleados</h1>'
-            + '<p>Filtro: ' + SIGH.esc(filtro) + ' · ' + lista.length + ' registro(s) · Generado: ' + new Date().toLocaleString("es-EC") + '</p>'
-            + '<table><thead><tr><th>#</th><th>Código</th><th>Cédula</th><th>Apellidos y nombres</th><th>Departamento</th>'
-            + '<th>Cargo</th><th>Teléfono</th><th>Email</th><th>Estado</th></tr></thead><tbody>'
-            + (filas || '<tr><td colspan="9">Sin registros</td></tr>') + '</tbody></table></body></html>');
-        v.document.close();
-        v.focus();
-        v.print();
+        if (!seleccionado) { SIGH.error("Seleccione un empleado del resumen para imprimir su ficha."); return; }
+        window.open("${pageContext.request.contextPath}/personal/empleados/ficha/" + encodeURIComponent(seleccionado), "_blank");
+    });
+
+    // LISTADO PDF: reporte de empleados con el filtro de estado actual (A, I o todos)
+    $("btnListado").addEventListener("click", function () {
+        window.open("${pageContext.request.contextPath}/personal/empleados/reporte?estado=" + encodeURIComponent($("filtroEstado").value), "_blank");
     });
 </script>
 </body>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SIGH GR07 · Taller 3: reporte empleados (abrir y editar en Jaspersoft Studio 6.21.5) -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="empleados" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenNoDataType="AllSectionsNoDetail">
+<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bd_monster"/>
+<property name="com.jaspersoft.studio.unit." value="pixel"/>
+<style name="Base" isDefault="true" fontName="DejaVu Sans" fontSize="9"/>
+<subDataset name="PorDepartamento">
+<parameter name="DEPARTAMENTO" class="java.lang.String"/>
+<parameter name="CARGO" class="java.lang.String"/>
+<parameter name="ESTADO" class="java.lang.String"/>
+<parameter name="GENERO" class="java.lang.String"/>
+<parameter name="ESTADO_CIVIL" class="java.lang.String"/>
+<parameter name="TIPO_SANGRE" class="java.lang.String"/>
+<parameter name="FECHA_DESDE" class="java.lang.String"/>
+<parameter name="FECHA_HASTA" class="java.lang.String"/>
+<parameter name="BUSCAR" class="java.lang.String"/>
+<queryString language="SQL"><![CDATA[SELECT d.PEDEP_DESCRI AS DEPARTAMENTO, COUNT(*) AS TOTAL
+FROM PEEMP_EMPLE e JOIN PEDEP_DEPAR d ON d.PEDEP_CODIGO = e.PEDEP_CODIGO
+JOIN PECAR_CARGO c ON c.PEDEP_CODIGO = e.PEDEP_CODIGO AND c.PECAR_CODIGO = e.PECAR_CODIGO
+WHERE ($P{DEPARTAMENTO} = '' OR e.PEDEP_CODIGO = $P{DEPARTAMENTO})
+  AND ($P{CARGO} = '' OR CONCAT(e.PEDEP_CODIGO, '|', e.PECAR_CODIGO) = $P{CARGO})
+  AND ($P{ESTADO} = '' OR e.PEEMP_ESTADO = $P{ESTADO})
+  AND ($P{GENERO} = '' OR e.PEGEN_CODIGO = $P{GENERO})
+  AND ($P{ESTADO_CIVIL} = '' OR e.PEESC_CODIGO = $P{ESTADO_CIVIL})
+  AND ($P{TIPO_SANGRE} = '' OR e.PETSA_CODIGO = $P{TIPO_SANGRE})
+  AND ($P{FECHA_DESDE} = '' OR e.PEEMP_FECNAC >= $P{FECHA_DESDE})
+  AND ($P{FECHA_HASTA} = '' OR e.PEEMP_FECNAC <= $P{FECHA_HASTA})
+  AND ($P{BUSCAR} = '' OR CONCAT_WS(' ', e.PEEMP_CODIGO, e.PEEMP_CEDULA, e.PEEMP_APELLI, e.PEEMP_NOMBRE, d.PEDEP_DESCRI,
+       c.PECAR_DESCRI, e.PEEMP_TELEFO, e.PEEMP_EMAIL, IF(e.PEEMP_ESTADO = 'A', 'Activo', 'Inactivo')) LIKE CONCAT('%', $P{BUSCAR}, '%'))
+GROUP BY d.PEDEP_DESCRI
+ORDER BY d.PEDEP_DESCRI]]></queryString>
+<field name="DEPARTAMENTO" class="java.lang.String"/>
+<field name="TOTAL" class="java.lang.Long"/>
+</subDataset>
+<parameter name="USUARIO" class="java.lang.String"><defaultValueExpression><![CDATA["admin"]]></defaultValueExpression></parameter>
+<parameter name="FILTROS" class="java.lang.String"><defaultValueExpression><![CDATA[""]]></defaultValueExpression></parameter>
+<parameter name="DEPARTAMENTO" class="java.lang.String"><defaultValueExpression><![CDATA[""]]></defaultValueExpression></parameter>
+<parameter name="CARGO" class="java.lang.String"><defaultValueExpression><![CDATA[""]]></defaultValueExpression></parameter>
+<parameter name="ESTADO" class="java.lang.String"><defaultValueExpression><![CDATA[""]]></defaultValueExpression></parameter>
+<parameter name="GENERO" class="java.lang.String"><defaultValueExpression><![CDATA[""]]></defaultValueExpression></parameter>
+<parameter name="ESTADO_CIVIL" class="java.lang.String"><defaultValueExpression><![CDATA[""]]></defaultValueExpression></parameter>
+<parameter name="TIPO_SANGRE" class="java.lang.String"><defaultValueExpression><![CDATA[""]]></defaultValueExpression></parameter>
+<parameter name="FECHA_DESDE" class="java.lang.String"><defaultValueExpression><![CDATA[""]]></defaultValueExpression></parameter>
+<parameter name="FECHA_HASTA" class="java.lang.String"><defaultValueExpression><![CDATA[""]]></defaultValueExpression></parameter>
+<parameter name="BUSCAR" class="java.lang.String"><defaultValueExpression><![CDATA[""]]></defaultValueExpression></parameter>
+<queryString language="SQL"><![CDATA[SELECT e.PEEMP_CODIGO, e.PEEMP_CEDULA, e.PEEMP_APELLI, e.PEEMP_NOMBRE, d.PEDEP_DESCRI, c.PECAR_DESCRI,
+       e.PEEMP_TELEFO, e.PEEMP_EMAIL, e.PEEMP_ESTADO
+FROM PEEMP_EMPLE e
+JOIN PEDEP_DEPAR d ON d.PEDEP_CODIGO = e.PEDEP_CODIGO
+JOIN PECAR_CARGO c ON c.PEDEP_CODIGO = e.PEDEP_CODIGO AND c.PECAR_CODIGO = e.PECAR_CODIGO
+WHERE ($P{DEPARTAMENTO} = '' OR e.PEDEP_CODIGO = $P{DEPARTAMENTO})
+  AND ($P{CARGO} = '' OR CONCAT(e.PEDEP_CODIGO, '|', e.PECAR_CODIGO) = $P{CARGO})
+  AND ($P{ESTADO} = '' OR e.PEEMP_ESTADO = $P{ESTADO})
+  AND ($P{GENERO} = '' OR e.PEGEN_CODIGO = $P{GENERO})
+  AND ($P{ESTADO_CIVIL} = '' OR e.PEESC_CODIGO = $P{ESTADO_CIVIL})
+  AND ($P{TIPO_SANGRE} = '' OR e.PETSA_CODIGO = $P{TIPO_SANGRE})
+  AND ($P{FECHA_DESDE} = '' OR e.PEEMP_FECNAC >= $P{FECHA_DESDE})
+  AND ($P{FECHA_HASTA} = '' OR e.PEEMP_FECNAC <= $P{FECHA_HASTA})
+  AND ($P{BUSCAR} = '' OR CONCAT_WS(' ', e.PEEMP_CODIGO, e.PEEMP_CEDULA, e.PEEMP_APELLI, e.PEEMP_NOMBRE, d.PEDEP_DESCRI,
+       c.PECAR_DESCRI, e.PEEMP_TELEFO, e.PEEMP_EMAIL, IF(e.PEEMP_ESTADO = 'A', 'Activo', 'Inactivo')) LIKE CONCAT('%', $P{BUSCAR}, '%'))
+ORDER BY e.PEEMP_APELLI, e.PEEMP_NOMBRE]]></queryString>
+<field name="PEEMP_CODIGO" class="java.lang.String"/>
+<field name="PEEMP_CEDULA" class="java.lang.String"/>
+<field name="PEEMP_APELLI" class="java.lang.String"/>
+<field name="PEEMP_NOMBRE" class="java.lang.String"/>
+<field name="PEDEP_DESCRI" class="java.lang.String"/>
+<field name="PECAR_DESCRI" class="java.lang.String"/>
+<field name="PEEMP_TELEFO" class="java.lang.String"/>
+<field name="PEEMP_EMAIL" class="java.lang.String"/>
+<field name="PEEMP_ESTADO" class="java.lang.String"/>
+
+<title><band height="70">
+<rectangle><reportElement x="0" y="0" width="802" height="62" forecolor="#082A52" backcolor="#082A52"/><graphicElement><pen lineWidth="0.0"/></graphicElement></rectangle>
+<staticText><reportElement x="8" y="4" width="330" height="16" forecolor="#9CC3EE"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><text><![CDATA[HOSPITAL GENERAL MONSTER SALUD]]></text></staticText>
+<staticText><reportElement x="8" y="18" width="330" height="26" forecolor="#FFFFFF"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="17" isBold="true"/></textElement><text><![CDATA[Reporte de empleados]]></text></staticText>
+<staticText><reportElement x="8" y="42" width="330" height="16" forecolor="#C7DBF2"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><text><![CDATA[SIGH · Subsistema de Personal · GR07]]></text></staticText>
+<textField isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="534" y="6" width="260" height="16" forecolor="#FFFFFF"></reportElement><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA["Fecha: " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())]]></textFieldExpression></textField>
+<textField isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="534" y="22" width="260" height="16" forecolor="#FFFFFF"></reportElement><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA["Generado por: " + $P{USUARIO}]]></textFieldExpression></textField>
+<textField isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="340" y="38" width="454" height="16" forecolor="#FFFFFF"></reportElement><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[$P{FILTROS}.isEmpty() ? "Todos los empleados" : "Filtros: " + $P{FILTROS}]]></textFieldExpression></textField>
+</band></title>
+<columnHeader><band height="22"><staticText><reportElement x="0" y="0" width="26" height="22" forecolor="#082A52" mode="Opaque" backcolor="#E3EFFB"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><text><![CDATA[#]]></text></staticText>
+<staticText><reportElement x="26" y="0" width="72" height="22" forecolor="#082A52" mode="Opaque" backcolor="#E3EFFB"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><text><![CDATA[Código]]></text></staticText>
+<staticText><reportElement x="98" y="0" width="72" height="22" forecolor="#082A52" mode="Opaque" backcolor="#E3EFFB"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><text><![CDATA[Cédula]]></text></staticText>
+<staticText><reportElement x="170" y="0" width="165" height="22" forecolor="#082A52" mode="Opaque" backcolor="#E3EFFB"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><text><![CDATA[Apellidos y nombres]]></text></staticText>
+<staticText><reportElement x="335" y="0" width="100" height="22" forecolor="#082A52" mode="Opaque" backcolor="#E3EFFB"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><text><![CDATA[Departamento]]></text></staticText>
+<staticText><reportElement x="435" y="0" width="105" height="22" forecolor="#082A52" mode="Opaque" backcolor="#E3EFFB"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><text><![CDATA[Cargo]]></text></staticText>
+<staticText><reportElement x="540" y="0" width="70" height="22" forecolor="#082A52" mode="Opaque" backcolor="#E3EFFB"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><text><![CDATA[Teléfono]]></text></staticText>
+<staticText><reportElement x="610" y="0" width="140" height="22" forecolor="#082A52" mode="Opaque" backcolor="#E3EFFB"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><text><![CDATA[Email]]></text></staticText>
+<staticText><reportElement x="750" y="0" width="52" height="22" forecolor="#082A52" mode="Opaque" backcolor="#E3EFFB"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><text><![CDATA[Estado]]></text></staticText></band></columnHeader>
+<detail><band height="20"><textField isStretchWithOverflow="true" isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="26" height="20" forecolor="#1F2937"></reportElement><box leftPadding="4" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5E1EE"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression></textField>
+<textField isStretchWithOverflow="true" isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="26" y="0" width="72" height="20" forecolor="#1F2937"></reportElement><box leftPadding="4" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5E1EE"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[$F{PEEMP_CODIGO}]]></textFieldExpression></textField>
+<textField isStretchWithOverflow="true" isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="98" y="0" width="72" height="20" forecolor="#1F2937"></reportElement><box leftPadding="4" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5E1EE"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA[$F{PEEMP_CEDULA}]]></textFieldExpression></textField>
+<textField isStretchWithOverflow="true" isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="170" y="0" width="165" height="20" forecolor="#1F2937"></reportElement><box leftPadding="4" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5E1EE"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA[$F{PEEMP_APELLI} + " " + $F{PEEMP_NOMBRE}]]></textFieldExpression></textField>
+<textField isStretchWithOverflow="true" isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="335" y="0" width="100" height="20" forecolor="#1F2937"></reportElement><box leftPadding="4" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5E1EE"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA[$F{PEDEP_DESCRI}]]></textFieldExpression></textField>
+<textField isStretchWithOverflow="true" isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="435" y="0" width="105" height="20" forecolor="#1F2937"></reportElement><box leftPadding="4" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5E1EE"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA[$F{PECAR_DESCRI}]]></textFieldExpression></textField>
+<textField isStretchWithOverflow="true" isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="540" y="0" width="70" height="20" forecolor="#1F2937"></reportElement><box leftPadding="4" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5E1EE"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA[$F{PEEMP_TELEFO}]]></textFieldExpression></textField>
+<textField isStretchWithOverflow="true" isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="610" y="0" width="140" height="20" forecolor="#1F2937"></reportElement><box leftPadding="4" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5E1EE"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA[$F{PEEMP_EMAIL}]]></textFieldExpression></textField>
+<textField isStretchWithOverflow="true" isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="750" y="0" width="52" height="20" forecolor="#1F2937"></reportElement><box leftPadding="4" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5E1EE"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA["A".equals($F{PEEMP_ESTADO}) ? "Activo" : "Inactivo"]]></textFieldExpression></textField></band></detail>
+<pageFooter><band height="22">
+<line><reportElement x="0" y="2" width="802" height="1" forecolor="#D5E1EE"/></line>
+<staticText><reportElement x="0" y="4" width="300" height="16" forecolor="#4B5563"/><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><text><![CDATA[Hospital General Monster Salud · SIGH]]></text></staticText>
+<textField isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="642" y="4" width="120" height="16" forecolor="#4B5563"></reportElement><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de"]]></textFieldExpression></textField>
+<textField evaluationTime="Report" isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="762" y="4" width="40" height="16" forecolor="#4B5563"></reportElement><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="false"/></textElement><textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression></textField>
+</band></pageFooter>
+<summary><band height="270">
+<textField isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="0" y="4" width="802" height="22" forecolor="#4B5563"><printWhenExpression><![CDATA[$V{REPORT_COUNT} == 0]]></printWhenExpression></reportElement><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="10" isBold="true"/></textElement><textFieldExpression><![CDATA["No hay empleados para el filtro seleccionado."]]></textFieldExpression></textField>
+<pieChart><chart evaluationTime="Report"><reportElement x="120" y="58" width="561" height="205"><printWhenExpression><![CDATA[$V{REPORT_COUNT} > 0]]></printWhenExpression></reportElement>
+<chartTitle color="#082A52"><font size="10" isBold="true"/><titleExpression><![CDATA["Distribución de empleados por departamento"]]></titleExpression></chartTitle><chartSubtitle/><chartLegend position="Right"/></chart>
+<pieDataset><dataset><datasetRun subDataset="PorDepartamento"><datasetParameter name="DEPARTAMENTO"><datasetParameterExpression><![CDATA[$P{DEPARTAMENTO}]]></datasetParameterExpression></datasetParameter><datasetParameter name="CARGO"><datasetParameterExpression><![CDATA[$P{CARGO}]]></datasetParameterExpression></datasetParameter><datasetParameter name="ESTADO"><datasetParameterExpression><![CDATA[$P{ESTADO}]]></datasetParameterExpression></datasetParameter><datasetParameter name="GENERO"><datasetParameterExpression><![CDATA[$P{GENERO}]]></datasetParameterExpression></datasetParameter><datasetParameter name="ESTADO_CIVIL"><datasetParameterExpression><![CDATA[$P{ESTADO_CIVIL}]]></datasetParameterExpression></datasetParameter><datasetParameter name="TIPO_SANGRE"><datasetParameterExpression><![CDATA[$P{TIPO_SANGRE}]]></datasetParameterExpression></datasetParameter><datasetParameter name="FECHA_DESDE"><datasetParameterExpression><![CDATA[$P{FECHA_DESDE}]]></datasetParameterExpression></datasetParameter><datasetParameter name="FECHA_HASTA"><datasetParameterExpression><![CDATA[$P{FECHA_HASTA}]]></datasetParameterExpression></datasetParameter><datasetParameter name="BUSCAR"><datasetParameterExpression><![CDATA[$P{BUSCAR}]]></datasetParameterExpression></datasetParameter><connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression></datasetRun></dataset><keyExpression><![CDATA[$F{DEPARTAMENTO}]]></keyExpression><valueExpression><![CDATA[$F{TOTAL}]]></valueExpression></pieDataset>
+<piePlot isShowLabels="true" labelFormat="{0}: {1}" legendLabelFormat="{0} ({2})"><plot backcolor="#FFFFFF"><seriesColor seriesOrder="0" color="#0B5CAD"/><seriesColor seriesOrder="1" color="#2F8BE6"/><seriesColor seriesOrder="2" color="#082A52"/><seriesColor seriesOrder="3" color="#7FB3EA"/><seriesColor seriesOrder="4" color="#4A6FA5"/><seriesColor seriesOrder="5" color="#A9CBF0"/><seriesColor seriesOrder="6" color="#1E4E8C"/><seriesColor seriesOrder="7" color="#5B9BD5"/><seriesColor seriesOrder="8" color="#C7DBF2"/></plot><itemLabel/></piePlot></pieChart>
+<textField isBlankWhenNull="true"><reportElement stretchType="RelativeToTallestObject" x="0" y="32" width="802" height="18" forecolor="#082A52"></reportElement><box leftPadding="4" rightPadding="4"></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><textFieldExpression><![CDATA["Total de empleados: " + $V{REPORT_COUNT}]]></textFieldExpression></textField>
+</band></summary>
+
+</jasperReport>

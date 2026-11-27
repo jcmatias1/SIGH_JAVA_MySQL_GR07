@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * Convierte los errores de las API JSON en {"mensaje": "..."} para mostrarlos con SweetAlert2.
  */
 @RestControllerAdvice(assignableTypes = {UsuarioApiControlador.class, PerfilApiControlador.class, AuditoriaApiControlador.class,
-        CargoApiControlador.class, DepartamentoApiControlador.class, EmpleadoApiControlador.class})
+        CargoApiControlador.class, DepartamentoApiControlador.class, EmpleadoApiControlador.class,
+        ReporteApiControlador.class})
 public class ManejadorErrores {
 
     @ExceptionHandler(ReglaNegocioException.class)

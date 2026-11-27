@@ -17,7 +17,11 @@
         <h1>Administrar cargo</h1>
         <p>Registre los cargos de cada departamento. Un cargo asignado a empleados no se puede eliminar.</p>
     </div>
-    <button class="btn btn-sigh" type="button" id="btnNuevo"><i class="bi bi-plus-circle mr-1"></i> Nuevo cargo</button>
+    <div class="d-flex flex-wrap" style="gap:10px">
+        <%-- Taller 3: reporte PDF agrupado por departamento (respeta el filtro de la lista) --%>
+        <button class="btn btn-suave" type="button" id="btnReporte"><i class="bi bi-file-earmark-pdf mr-1"></i> Reporte PDF</button>
+        <button class="btn btn-sigh" type="button" id="btnNuevo"><i class="bi bi-plus-circle mr-1"></i> Nuevo cargo</button>
+    </div>
 </section>
 
 <div class="panel">
@@ -74,6 +78,11 @@
     document.getElementById("buscar").addEventListener("input", pintar);
     document.getElementById("filtroDepartamento").addEventListener("change", pintar);
     document.getElementById("btnNuevo").addEventListener("click", function () { formulario(null); });
+    // REPORTE PDF: abre el reporte de JasperReports con el departamento elegido en el filtro
+    document.getElementById("btnReporte").addEventListener("click", function () {
+        const dep = document.getElementById("filtroDepartamento").value;
+        window.open("${pageContext.request.contextPath}/personal/cargos/reporte" + (dep ? "?departamento=" + encodeURIComponent(dep) : ""), "_blank");
+    });
 
     async function cargar() {
         cargos = await SIGH.api(API);

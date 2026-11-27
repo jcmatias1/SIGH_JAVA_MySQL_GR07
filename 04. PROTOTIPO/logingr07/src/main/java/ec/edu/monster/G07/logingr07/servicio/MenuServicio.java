@@ -27,7 +27,8 @@ public class MenuServicio {
 
     private static final Map<String, String> ICONOS_SISTEMA = Map.of(
             "SEG", "bi-shield-lock",
-            "PER", "bi-person-badge");
+            "PER", "bi-person-badge",
+            "REP", "bi-file-earmark-bar-graph");
 
     private static final Map<String, String> ICONOS_OPCION = Map.ofEntries(
             Map.entry("S001", "bi-people"),
@@ -35,7 +36,8 @@ public class MenuServicio {
             Map.entry("S003", "bi-journal-text"),
             Map.entry("P001", "bi-building"),
             Map.entry("P002", "bi-briefcase"),
-            Map.entry("P003", "bi-person-vcard"));
+            Map.entry("P003", "bi-person-vcard"),
+            Map.entry("R001", "bi-file-earmark-pdf"));
 
     private final OpcionRepository opcionRepository;
 
